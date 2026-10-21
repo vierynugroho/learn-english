@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>English Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🦉 <span>English Quest</span></div>
+    <div class="stats-mini">
+      <span class="pill" title="Streak">🔥 <b id="mini-streak">0</b></span>
+      <span class="pill" title="XP">⭐ <b id="mini-xp">0</b></span>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button data-view="dashboard" class="active">🏠 <span>Home</span></button>
+    <button data-view="roadmap">🗺️ <span>Roadmap</span></button>
+    <button data-view="grammar">📘 <span>Grammar</span></button>
+    <button data-view="writing">✍️ <span>Writing</span></button>
+    <button data-view="log">📅 <span>Log</span></button>
+    <button data-view="vocab">🧠 <span>Vocab</span></button>
+    <button data-view="settings">⚙️ <span>Setting</span></button>
+  </nav>
+
+  <main>
+    <!-- DASHBOARD -->
+    <section id="view-dashboard" class="view active">
+      <div class="hero card">
+        <div>
+          <p class="muted" id="greeting">Hello!</p>
+          <h1 id="rank-title">🐣 Newbie Explorer</h1>
+          <div class="xpbar"><div id="xp-fill"></div></div>
+          <p class="muted small" id="xp-next"></p>
+        </div>
+        <div class="goal-ring" id="goal-ring">
+          <svg viewBox="0 0 36 36"><circle class="bg" cx="18" cy="18" r="15.9"/><circle class="fg" id="ring-fg" cx="18" cy="18" r="15.9"/></svg>
+          <div class="ring-label"><b id="today-min">0</b><small id="goal-min">/30 mnt</small></div>
+        </div>
+      </div>
+
+      <div class="grid4">
+        <div class="stat card"><span>🔥</span><b id="s-streak">0</b><small>hari streak</small></div>
+        <div class="stat card"><span>⏱️</span><b id="s-hours">0</b><small>jam total</small></div>
+        <div class="stat card"><span>✅</span><b id="s-topics">0</b><small>topik selesai</small></div>
+        <div class="stat card"><span>🧠</span><b id="s-vocab">0</b><small>kosakata</small></div>
+      </div>
+
+      <div class="card">
+        <div class="row-between">
+          <h2>💬 Phrase of the Day</h2>
+          <button class="btn ghost small" id="new-phrase">🔀 Ganti</button>
+        </div>
+        <div class="phrase">
+          <div class="tag formal">Formal</div>
+          <p id="phrase-formal"></p>
+          <button class="speak" data-speak-target="phrase-formal" title="Dengar">🔊</button>
+        </div>
+        <div class="phrase">
+          <div class="tag informal">Informal</div>
+          <p id="phrase-informal"></p>
+          <button class="speak" data-speak-target="phrase-informal" title="Dengar">🔊</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🎯 Lanjutkan Belajar</h2>
+        <div id="next-topic"></div>
+      </div>
+
+      <div class="card">
+        <h2>📈 Progress per Level</h2>
+        <div id="level-progress"></div>
+      </div>
+
+      <div class="card">
+        <h2>⚡ Quick Log</h2>
+        <p class="muted small">Barusan belajar? Catat cepat:</p>
+        <div class="quick-log" id="quick-log"></div>
+      </div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section id="view-roadmap" class="view">
+      <div class="card target">
+        <b>🎯 Target:</b> Bekerja remote untuk perusahaan luar negeri.
+        <p class="muted small">Selesaikan ≥ 60% level untuk membuka level berikutnya. Sudah jago? Aktifkan "Buka semua level" di Setting.</p>
+      </div>
+      <div id="roadmap"></div>
+    </section>
+
+    <!-- GRAMMAR -->
+    <section id="view-grammar" class="view">
+      <div class="card">
+        <div class="row-between">
+          <h2>📘 Grammar Guide</h2>
+          <span class="muted small" id="g-count"></span>
+        </div>
+        <p class="muted small">Rumus, kapan dipakai, alasan memilihnya, contoh, dan tips & trik. Tandai "Sudah paham" (+20 XP) dan jawab quiz-nya.</p>
+        <div class="bar"><div id="g-bar"></div></div>
+        <input type="search" id="g-search" class="search" placeholder="Cari: would, have, past, since…" style="margin-top:12px" />
+        <div class="chips" id="g-chips"></div>
+      </div>
+      <div id="grammar-list"></div>
+    </section>
+
+    <!-- WRITING -->
+    <section id="view-writing" class="view">
+      <div class="card">
+        <div class="row-between">
+          <h2>✍️ Writing Lab</h2>
+          <span class="muted small" id="w-summary"></span>
+        </div>
+        <label class="w-label">Pilih latihan
+          <select id="w-prompt"></select>
+        </label>
+        <div id="w-prompt-info"></div>
+      </div>
+
+      <div class="card">
+        <div class="row-between">
+          <h2 id="w-editor-title">📝 Tulisan Baru</h2>
+          <span class="pill small" id="w-timer" title="Waktu menulis sesi ini">⏱️ 0 mnt</span>
+        </div>
+        <div class="form">
+          <label>Judul <input id="w-title" placeholder="mis. Email cuti ke manajer" /></label>
+          <label>Register
+            <select id="w-register">
+              <option value="formal">🎩 Formal</option>
+              <option value="neutral">⚖️ Netral</option>
+              <option value="informal">😎 Informal</option>
+            </select>
+          </label>
+        </div>
+        <textarea id="w-text" rows="12" placeholder="Start writing in English here… (draft tersimpan otomatis)"></textarea>
+        <div class="w-stats" id="w-stats"></div>
+        <div class="bar"><div id="w-target-bar"></div></div>
+
+        <div class="btn-row">
+          <button class="btn" id="w-check">🔍 Cek Tulisan</button>
+          <button class="btn primary" id="w-save">💾 Simpan</button>
+          <button class="btn ghost" id="w-new">🆕 Baru</button>
+        </div>
+        <label class="check-line"><input type="checkbox" id="w-log" checked /> Catat waktu menulis ke Log belajar</label>
+
+        <div id="w-results"></div>
+
+        <details class="w-checklist">
+          <summary><b>✅ Self-review checklist</b></summary>
+          <div id="w-checks"></div>
+        </details>
+      </div>
+
+      <div class="card">
+        <h2>📚 Tulisanku</h2>
+        <input type="search" id="w-search" class="search" placeholder="Cari tulisan…" />
+        <ul class="vocab-list" id="w-list"></ul>
+      </div>
+    </section>
+
+    <!-- LOG -->
+    <section id="view-log" class="view">
+      <div class="card">
+        <h2>📝 Catat Sesi Belajar</h2>
+        <form id="log-form" class="form">
+          <label>Tanggal <input type="date" id="log-date" required /></label>
+          <label>Durasi (menit) <input type="number" id="log-min" min="1" max="600" value="20" required /></label>
+          <label>Jenis
+            <select id="log-type"></select>
+          </label>
+          <label class="full">Catatan (opsional)
+            <input type="text" id="log-note" placeholder="mis. Nonton BBC 6 Minute English" />
+          </label>
+          <button class="btn primary full" type="submit">+ Simpan (+XP)</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>🗓️ Heatmap 16 Minggu</h2>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="legend muted small">Sedikit <i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><i class="l4"></i> Banyak</div>
+      </div>
+      <div class="card">
+        <h2>📊 Skill Balance</h2>
+        <div id="skill-balance"></div>
+      </div>
+      <div class="card">
+        <h2>📜 Riwayat</h2>
+        <ul class="log-list" id="log-list"></ul>
+      </div>
+    </section>
+
+    <!-- VOCAB -->
+    <section id="view-vocab" class="view">
+      <div class="card">
+        <h2>➕ Tambah Kosakata</h2>
+        <form id="vocab-form" class="form">
+          <label>Word / Phrase <input id="v-word" required placeholder="touch base" /></label>
+          <label>Arti <input id="v-mean" required placeholder="saling update singkat" /></label>
+          <label class="full">Contoh kalimat <input id="v-ex" placeholder="Let's touch base tomorrow." /></label>
+          <button class="btn primary full" type="submit">+ Simpan (+5 XP)</button>
+        </form>
+      </div>
+      <div class="card">
+        <div class="row-between">
+          <h2>🃏 Flashcard</h2>
+          <span class="muted small" id="fc-count"></span>
+        </div>
+        <div id="flashcard-area"></div>
+      </div>
+      <div class="card">
+        <h2>📚 Vocab Bank</h2>
+        <input type="search" id="v-search" placeholder="Cari…" class="search" />
+        <ul class="vocab-list" id="vocab-list"></ul>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="view-settings" class="view">
+      <div class="card">
+        <h2>👤 Profil</h2>
+        <form id="settings-form" class="form">
+          <label>Nama <input id="set-name" placeholder="Nama kamu" /></label>
+          <label>Target harian (menit) <input type="number" id="set-goal" min="5" max="300" /></label>
+          <label class="full check"><input type="checkbox" id="set-unlock" /> Buka semua level (skip lock)</label>
+          <button class="btn primary full" type="submit">Simpan</button>
+        </form>
+      </div>
+      <div class="card">
+        <h2>💾 Backup Data</h2>
+        <p class="muted small">Data disimpan di browser ini (localStorage). Export rutin agar aman / pindah device.</p>
+        <div class="btn-row">
+          <button class="btn" id="export-btn">⬇️ Export JSON</button>
+          <label class="btn">⬆️ Import JSON <input type="file" id="import-file" accept="application/json" hidden /></label>
+          <button class="btn danger" id="reset-btn">🗑️ Reset</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>💡 Tips Sumber Belajar</h2>
+        <ul class="tips">
+          <li>🎧 <b>Listening:</b> BBC 6 Minute English, Syntax.fm, The Changelog</li>
+          <li>🗣️ <b>Speaking:</b> Rekam diri, iTalki / Preply tutor, latihan dengan AI</li>
+          <li>📖 <b>Reading:</b> Dokumentasi resmi, Hacker News, dev.to</li>
+          <li>✍️ <b>Writing:</b> Tulis README, blog teknis, PR description</li>
+          <li>💼 <b>Jobs:</b> We Work Remotely, RemoteOK, Wellfound, LinkedIn</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- TOPIC MODAL -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal-box">
+      <button class="close" id="modal-close" aria-label="Tutup">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <div id="confetti"></div>
+
+  <script src="data.js"></script>
+  <script src="grammar.js"></script>
+  <script src="writing.js"></script>
+  <script src="spelling.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
